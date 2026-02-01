@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- LOGIN -->
   <div class="page-container" id="loginBox">
     <h1>Accesso salone</h1>
     <form id="ownerLoginForm">
@@ -22,28 +23,45 @@
       <p id="ownerLoginMsg" class="message"></p>
     </form>
   </div>
-
-  <div class="table-container" id="bookingsSection" style="display:none;">
-    <h1>Prenotazioni - Parrucchiera Sonia</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Data</th>
-          <th>Ora</th>
-          <th>Nome</th>
-          <th>Email</th>
-          <th>Telefono</th>
-          <th>Servizio</th>
-          <th>Note</th>
-          <th>Codice</th>
-          <th>Azioni</th>
-        </tr>
-      </thead>
-      <tbody id="bookingsTableBody"></tbody>
-    </table>
+  <!-- GESTIONE COMPLETA -->
+  <div id="mainSection" style="display:none;">
+    <!-- PRENOTAZIONI -->
+    <section id="bookingsSection">
+      <h1>Prenotazioni - Parrucchiera Sonia</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th><th>Data</th><th>Ora</th><th>Nome</th><th>Email</th>
+            <th>Telefono</th><th>Servizio</th><th>Note</th><th>Codice</th><th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody id="bookingsTableBody"></tbody>
+      </table>
+    </section>
+    <hr />
+    <!-- CLIENTI E TRATTAMENTI -->
+    <section id="clientsSection">
+      <h1>Clienti e Trattamenti</h1>
+      <div class="client-forms">
+        <h2>➕ Aggiungi Cliente</h2>
+        <form id="addClientForm">
+          <input type="text" name="nome" placeholder="Nome" required />
+          <input type="text" name="cognome" placeholder="Cognome" required />
+          <input type="text" name="soprannome" placeholder="Soprannome" />
+          <input type="text" name="cellulare" placeholder="Cellulare" required />
+          <button type="submit">Salva Cliente</button>
+        </form>
+      </div>
+      <div class="client-search">
+        <h2>🔍 Cerca Cliente</h2>
+        <form id="searchClientForm">
+          <input type="text" name="nome" placeholder="Inserisci nome o soprannome" required />
+          <button type="submit">Cerca</button>
+        </form>
+        <div id="clientResults"></div>
+      </div>
+    </section>
   </div>
-
   <script src="owner.js"></script>
 </body>
 </html>
