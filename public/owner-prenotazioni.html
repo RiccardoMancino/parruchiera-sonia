@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Prenotazioni - Parrucchiera Sonia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- LOGIN -->
+  <div id="loginBox" class="page-container">
+    <h1>Accesso area Prenotazioni</h1>
+    <form id="ownerLoginForm">
+      <input type="hidden" name="area" value="prenotazioni" />
+      <div class="form-row">
+        <label>Username</label>
+        <input type="text" name="username" required />
+      </div>
+      <div class="form-row">
+        <label>Password</label>
+        <input type="password" name="password" required />
+      </div>
+      <button type="submit">Accedi</button>
+      <p id="ownerLoginMsg"></p>
+    </form>
+  </div>
+  <!-- SEZIONE PRENOTAZIONI -->
+  <div id="mainSection" style="display:none;">
+    <h1>📅 Gestione Prenotazioni</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>Data</th><th>Ora</th><th>Nome</th><th>Email</th><th>Telefono</th>
+          <th>Servizio</th><th>Note</th><th>Codice</th><th>Azioni</th>
+        </tr>
+      </thead>
+      <tbody id="bookingsTableBody"></tbody>
+    </table>
+  </div>
+  <script src="owner.js"></script>
+</body>
+</html>
