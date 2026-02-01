@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Clienti e Trattamenti - Parrucchiera Sonia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- LOGIN -->
+  <div id="loginBox" class="page-container">
+    <h1>Accesso area Trattamenti</h1>
+    <form id="ownerLoginForm">
+      <input type="hidden" name="area" value="trattamenti" />
+      <div class="form-row">
+        <label>Username</label>
+        <input type="text" name="username" required />
+      </div>
+      <div class="form-row">
+        <label>Password</label>
+        <input type="password" name="password" required />
+      </div>
+      <button type="submit" class="btn-primary">Accedi</button>
+      <p id="ownerLoginMsg" class="message"></p>
+    </form>
+  </div>
+
+  <!-- SEZIONE CLIENTI -->
+  <div id="mainSection" style="display:none;">
+    <section id="clientsSection">
+      <h1>👱‍♀️ Gestione Clienti & Trattamenti</h1>
+      <div class="client-forms">
+        <h2>➕ Aggiungi Cliente e Trattamento</h2>
+        <form id="addClientForm">
+          <input type="text" name="nome" placeholder="Nome" required />
+          <input type="text" name="cognome" placeholder="Cognome" required />
+          <input type="text" name="soprannome" placeholder="Soprannome" />
+          <input type="text" name="cellulare" placeholder="Cellulare" required />
+          <hr />
+          <input type="text" name="trattamento" placeholder="Nome trattamento" />
+          <input type="number" step="0.01" name="prezzo" placeholder="Prezzo (€)" />
+          <input type="date" name="data" />
+          <input type="text" name="note" placeholder="Note" />
+          <button type="submit">Salva Cliente/Trattamento</button>
+        </form>
+      </div>
+
+      <div class="client-search">
+        <h2>🔍 Cerca Cliente</h2>
+        <form id="searchClientForm">
+          <input type="text" name="nome" placeholder="Nome o soprannome" required />
+          <button type="submit">Cerca</button>
+        </form>
+        <div id="clientResults"></div>
+      </div>
+    </section>
+  </div>
+  <script src="owner.js"></script>
+</body>
+</html>
