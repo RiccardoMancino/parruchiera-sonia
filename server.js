@@ -278,6 +278,115 @@ app.delete("/api/owner/bookings/:id", (req, res) => {
   });
 });
 
+// --------------------------------------
+// CLIENTI & TRATTAMENTI
+// --------------------------------------
+// Crea tabelle se non esistono
+db.serialize(() => {
+  db.run(`
+    CREATE TABLE IF NOT EXISTS clients (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nome TEXT NOT NULL,
+      cognome TEXT NOT NULL,
+      soprannome TEXT,
+      cellulare TEXT UNIQUE
+    );
+  `);
+  db.run(`
+    CREATE TABLE IF NOT EXISTS treatments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      client_id INTEGER NOT NULL,
+      nome_trattamento TEXT NOT NULL,
+      data_trattamento TEXT NOT NULL,
+      prezzo_effettivo REAL NOT NULL,
+      note TEXT,
+      FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+    );
+  `);
+});
+// ➕ Aggiungi cliente
+app.post("/api/clients", (req, res) => {
+  const { nome, cognome, soprannome, cellulare } = req.body;
+  if (!nome || !cognome || !cellulare) {
+    return res.status(400).json({ success: false, error: "Dati mancanti" });
+  }
+  db.run(
+    `INSERT INTO clients (nome, cognome, soprannome, cellulare)
+     VALUES (?, ?, ?, ?)`,
+    [nome, cognome, soprannome || "", cellulare],
+    function (err) {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ success: false, error: "Errore aggiunta cliente" });
+      }
+      res.json({ success: true, id: this.lastID });
+    }
+  );
+});
+// 🔍 Ricerca cliente per nome/soprannome
+app.get("/api/clients/search", (req, res) => {
+  const nome = req.query.nome || "";
+  const likeParam = `%${nome}%`;
+  db.all(
+    `SELECT * FROM clients
+     WHERE nome LIKE ? OR cognome LIKE ? OR soprannome LIKE ?`,
+    [likeParam, likeParam, likeParam],
+    (err, rows) => {
+      if (err) return res.status(500).json({ success: false, error: "Errore DB" });
+      if (rows.length === 0) return res.json([]);
+      // Otteniamo i trattamenti di ogni cliente
+      const clienti = [];
+      let completati = 0;
+      rows.forEach((cliente) => {
+        db.all(
+          "SELECT * FROM treatments WHERE client_id = ? ORDER BY data_trattamento DESC",
+          [cliente.id],
+          (err2, trattamenti) => {
+            cliente.trattamenti = trattamenti || [];
+            clienti.push(cliente);
+            completati++;
+            if (completati === rows.length) {
+              res.json(clienti);
+            }
+          }
+        );
+      });
+    }
+  );
+});
+// ➕ Aggiungi trattamento a un cliente
+app.post("/api/clients/:id/trattamenti", (req, res) => {
+  const idCliente = req.params.id;
+  const { nome_trattamento, data_trattamento, prezzo_effettivo, note } = req.body;
+  if (!idCliente || !nome_trattamento || !data_trattamento || !prezzo_effettivo) {
+    return res.status(400).json({ success: false, error: "Dati mancanti" });
+  }
+  db.run(
+    `INSERT INTO treatments (client_id, nome_trattamento, data_trattamento, prezzo_effettivo, note)
+     VALUES (?, ?, ?, ?, ?)`,
+    [idCliente, nome_trattamento, data_trattamento, prezzo_effettivo, note || ""],
+    function (err) {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ success: false, error: "Errore salvataggio trattamento" });
+      }
+      res.json({ success: true, id: this.lastID });
+    }
+  );
+});
+// 📋 Recupera tutti i trattamenti di un cliente
+app.get("/api/clients/:id/trattamenti", (req, res) => {
+  const idCliente = req.params.id;
+  db.all(
+    "SELECT * FROM treatments WHERE client_id = ? ORDER BY data_trattamento DESC",
+    [idCliente],
+    (err, rows) => {
+      if (err) return res.status(500).json({ success: false, error: "Errore DB" });
+      res.json(rows);
+    }
+  );
+});
+
 // Routing pagine
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
