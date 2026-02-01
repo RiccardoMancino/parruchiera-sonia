@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Area clienti - Parrucchiera Sonia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-container" id="clientLoginBox">
+    <h1>Area clienti</h1>
+    <form id="clientLoginForm">
+      <div class="form-row">
+        <label>Email usata per la prenotazione</label>
+        <input type="email" name="email" required />
+      </div>
+      <div class="form-row">
+        <label>Codice prenotazione (ricevuto via email)</label>
+        <input type="text" name="code" required />
+      </div>
+      <button type="submit" class="btn-primary">Accedi alle prenotazioni</button>
+      <p id="clientLoginMsg" class="message"></p>
+    </form>
+  </div>
+
+  <div class="table-container" id="clientBookingsSection" style="display:none;">
+    <h1>Le tue prenotazioni</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Data</th>
+          <th>Ora</th>
+          <th>Servizio</th>
+          <th>Note</th>
+          <th>Azioni</th>
+        </tr>
+      </thead>
+      <tbody id="clientBookingsBody"></tbody>
+    </table>
+  </div>
+
+  <script src="clienti.js"></script>
+</body>
+</html>
