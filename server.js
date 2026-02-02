@@ -89,31 +89,26 @@ app.post("/api/bookings", (req, res) => {
     INSERT INTO bookings (name, email, phone, service, date, time, notes, code)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `);
-// --- API per gestione clienti del salone --- //
-
-// Inserisci nuovo cliente
+// === API CLIENTI SALONE ===
+// Inserimento nuovo cliente
 app.post("/api/salon/clients", (req, res) => {
   const { nome, cognome, telefono, trattamento, prezzo } = req.body;
-
   if (!nome || !cognome) {
     return res.status(400).json({ error: "Nome e cognome obbligatori" });
   }
-
   db.run(
     "INSERT INTO salon_clients (nome, cognome, telefono, trattamento, prezzo) VALUES (?, ?, ?, ?, ?)",
     [nome, cognome, telefono || "", trattamento || "", prezzo || 0],
     function (err) {
       if (err) {
-        console.error("Errore inserimento cliente:", err);
+        console.error("❌ Errore inserimento cliente:", err);
         return res.status(500).json({ error: "Errore inserimento cliente" });
       }
-      // ✅ risponde subito al frontend
       res.json({ success: true, id: this.lastID });
     }
   );
 });
-
-// Lista clienti + ricerca per nome
+// Lista clienti
 app.get("/api/salon/clients", (req, res) => {
   const search = req.query.nome ? `%${req.query.nome}%` : "%";
   db.all(
@@ -121,14 +116,13 @@ app.get("/api/salon/clients", (req, res) => {
     [search],
     (err, rows) => {
       if (err) {
-        console.error("Errore caricamento clienti:", err);
+        console.error("❌ Errore caricamento clienti:", err);
         return res.status(500).json({ error: "Errore caricamento clienti" });
       }
       res.json(rows);
     }
   );
 });
-
   stmt.run(
     [name, email, phone || "", service, date, time, notes || "", code],
     function (err) {
@@ -303,10 +297,9 @@ app.get("/owner", (req, res) => {
 app.get("/clienti", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "clienti.html"));
 });
-app.listen(PORT, () => {
-  console.log(`Server attivo su http://localhost:${PORT}`);
-});
 app.get("/salon-clients", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "salon-clients.html"));
 });
-
+app.listen(PORT, () => {
+  console.log(`Server attivo su http://localhost:${PORT}`);
+});
