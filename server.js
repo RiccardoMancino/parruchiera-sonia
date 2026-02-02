@@ -181,6 +181,54 @@ app.get("/api/salon/clients", (req, res) => {
     }
   );
 });
+// === Modifica cliente ===
+app.put("/api/salon/clients/:id", (req, res) => {
+  const id = req.params.id;
+  const { nome, cognome, telefono, trattamento, prezzo } = req.body;
+
+  db.run(
+    `UPDATE salon_clients
+     SET nome = ?, cognome = ?, telefono = ?, trattamento = ?, prezzo = ?
+     WHERE id = ?`,
+    [nome, cognome, telefono, trattamento, prezzo, id],
+    (err) => {
+      if (err) {
+        console.error("Errore aggiornamento cliente:", err);
+        return res.status(500).json({ error: "Errore aggiornamento cliente" });
+      }
+      res.json({ success: true });
+    }
+  );
+});
+// === Modifica cliente ===
+app.put("/api/salon/clients/:id", (req, res) => {
+  const id = req.params.id;
+  const { nome, cognome, telefono, trattamento, prezzo } = req.body;
+  db.run(
+    `UPDATE salon_clients
+     SET nome = ?, cognome = ?, telefono = ?, trattamento = ?, prezzo = ?
+     WHERE id = ?`,
+    [nome, cognome, telefono, trattamento, prezzo, id],
+    (err) => {
+      if (err) {
+        console.error("Errore aggiornamento cliente:", err);
+        return res.status(500).json({ error: "Errore aggiornamento cliente" });
+      }
+      res.json({ success: true });
+    }
+  );
+});
+// === Cancella cliente ===
+app.delete("/api/salon/clients/:id", (req, res) => {
+  const id = req.params.id;
+  db.run(`DELETE FROM salon_clients WHERE id = ?`, [id], (err) => {
+    if (err) {
+      console.error("Errore cancellazione cliente:", err);
+      return res.status(500).json({ error: "Errore cancellazione cliente" });
+    }
+    res.json({ success: true });
+  });
+});
 // LOGIN CLIENTE (email + codice)
 app.post("/api/client/login", (req, res) => {
   const { email, code } = req.body;
