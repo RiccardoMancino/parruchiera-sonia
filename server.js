@@ -50,14 +50,15 @@ db.serialize(() => {
 });
 // CONFIG EMAIL  --------------------
 // Sostituisci con i tuoi dati reali
-const SALON_EMAIL = "parrucchierasonia@gmail.com";
+const SALON_EMAIL = process.env.SALON_EMAIL || "parrucchierasonia@gmail.com";
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
-    user: SALON_EMAIL,             // tua email gmail
-    pass: "INSERISCI-LA-TUA-PASSWORD-APP"   // app password
+    user: SALON_EMAIL,
+    pass: process.env.SALON_EMAIL_PASS
   }
 });
+
 // ----------------------------------
 // Helpers
 function generateCode() {
