@@ -299,4 +299,7 @@ app.get("/clienti", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server attivo su http://localhost:${PORT}`);
 });
+app.get("/salon-clients", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "salon-clients.html"));
+});
 
