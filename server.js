@@ -89,7 +89,7 @@ app.post("/api/bookings", (req, res) => {
     INSERT INTO bookings (name, email, phone, service, date, time, notes, code)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `);
-  // --- API per gestione clienti del salone --- //
+// --- API per gestione clienti del salone --- //
 
 // Inserisci nuovo cliente
 app.post("/api/salon/clients", (req, res) => {
@@ -103,7 +103,11 @@ app.post("/api/salon/clients", (req, res) => {
     "INSERT INTO salon_clients (nome, cognome, telefono, trattamento, prezzo) VALUES (?, ?, ?, ?, ?)",
     [nome, cognome, telefono || "", trattamento || "", prezzo || 0],
     function (err) {
-      if (err) return res.status(500).json({ error: "Errore inserimento cliente" });
+      if (err) {
+        console.error("Errore inserimento cliente:", err);
+        return res.status(500).json({ error: "Errore inserimento cliente" });
+      }
+      // ✅ risponde subito al frontend
       res.json({ success: true, id: this.lastID });
     }
   );
@@ -116,7 +120,10 @@ app.get("/api/salon/clients", (req, res) => {
     "SELECT * FROM salon_clients WHERE nome LIKE ? ORDER BY id DESC",
     [search],
     (err, rows) => {
-      if (err) return res.status(500).json({ error: "Errore caricamento clienti" });
+      if (err) {
+        console.error("Errore caricamento clienti:", err);
+        return res.status(500).json({ error: "Errore caricamento clienti" });
+      }
       res.json(rows);
     }
   );
