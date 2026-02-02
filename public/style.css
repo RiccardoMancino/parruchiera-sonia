@@ -215,3 +215,45 @@ th {
     align-items: center;
   }
 }
+/* --- STILE TAB CLIENTI SALONE --- */
+.page-container {
+  max-width: 900px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+th, td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #eee;
+}
+th {
+  background-color: #f9e2eb;
+  color: #b51d5e;
+  text-align: left;
+}
+tr:nth-child(even) {
+  background-color: #fff5f8;
+}
+
+td[contenteditable="true"] {
+  background-color: #fff;
+  border: 1px solid transparent;
+}
+td[contenteditable="true"]:focus {
+  outline: 2px solid #e91e63;
+}
+
+.btn-small {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 3px;
+}
+.btn-small:hover {
+  transform: scale(1.2);
+}
+
