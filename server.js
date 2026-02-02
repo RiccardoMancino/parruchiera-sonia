@@ -253,5 +253,4 @@ app.get("/clienti", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server attivo su http://localhost:${PORT}`);
 });
-});
-app.listen(PORT, () => console.log(`✅ Server attivo: http://localhost:${PORT}`));
+
