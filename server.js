@@ -40,7 +40,6 @@ db.run(`
     created_at TEXT DEFAULT CURRENT_TIMESTAMP
   )
 `);
-
   // Tabella proprietari (solo Sonia)
   db.run(`
     CREATE TABLE IF NOT EXISTS owners (
