@@ -88,40 +88,6 @@ app.post("/api/bookings", (req, res) => {
     INSERT INTO bookings (name, email, phone, service, date, time, notes, code)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `);
-// === API CLIENTI SALONE ===
-// Inserimento nuovo cliente
-app.post("/api/salon/clients", (req, res) => {
-  const { nome, cognome, telefono, trattamento, prezzo } = req.body;
-  if (!nome || !cognome) {
-    return res.status(400).json({ error: "Nome e cognome obbligatori" });
-  }
-  db.run(
-    "INSERT INTO salon_clients (nome, cognome, telefono, trattamento, prezzo) VALUES (?, ?, ?, ?, ?)",
-    [nome, cognome, telefono || "", trattamento || "", prezzo || 0],
-    function (err) {
-      if (err) {
-        console.error("❌ Errore inserimento cliente:", err);
-        return res.status(500).json({ error: "Errore inserimento cliente" });
-      }
-      res.json({ success: true, id: this.lastID });
-    }
-  );
-});
-// Lista clienti
-app.get("/api/salon/clients", (req, res) => {
-  const search = req.query.nome ? `%${req.query.nome}%` : "%";
-  db.all(
-    "SELECT * FROM salon_clients WHERE nome LIKE ? ORDER BY id DESC",
-    [search],
-    (err, rows) => {
-      if (err) {
-        console.error("❌ Errore caricamento clienti:", err);
-        return res.status(500).json({ error: "Errore caricamento clienti" });
-      }
-      res.json(rows);
-    }
-  );
-});
   stmt.run(
     [name, email, phone || "", service, date, time, notes || "", code],
     function (err) {
@@ -178,6 +144,40 @@ app.get("/api/salon/clients", (req, res) => {
         if (error) console.error("Errore invio email salone:", error);
       });
       res.json({ success: true, id: bookingId, code });
+    }
+  );
+});
+// === API CLIENTI SALONE ===
+// Inserimento nuovo cliente
+app.post("/api/salon/clients", (req, res) => {
+  const { nome, cognome, telefono, trattamento, prezzo } = req.body;
+  if (!nome || !cognome) {
+    return res.status(400).json({ error: "Nome e cognome obbligatori" });
+  }
+  db.run(
+    "INSERT INTO salon_clients (nome, cognome, telefono, trattamento, prezzo) VALUES (?, ?, ?, ?, ?)",
+    [nome, cognome, telefono || "", trattamento || "", prezzo || 0],
+    function (err) {
+      if (err) {
+        console.error("❌ Errore inserimento cliente:", err);
+        return res.status(500).json({ error: "Errore inserimento cliente" });
+      }
+      res.json({ success: true, id: this.lastID });
+    }
+  );
+});
+// Lista clienti
+app.get("/api/salon/clients", (req, res) => {
+  const search = req.query.nome ? `%${req.query.nome}%` : "%";
+  db.all(
+    "SELECT * FROM salon_clients WHERE nome LIKE ? ORDER BY id DESC",
+    [search],
+    (err, rows) => {
+      if (err) {
+        console.error("❌ Errore caricamento clienti:", err);
+        return res.status(500).json({ error: "Errore caricamento clienti" });
+      }
+      res.json(rows);
     }
   );
 });
