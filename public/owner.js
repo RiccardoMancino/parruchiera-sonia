@@ -1,54 +1,3 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-  <meta charset="UTF-8" />
-  <title>Area salone - Parrucchiera Sonia</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="page-container" id="loginBox">
-    <h1>Accesso salone</h1>
-    <form id="ownerLoginForm">
-      <div class="form-row">
-        <label>Username</label>
-        <input type="text" name="username" required />
-      </div>
-      <div class="form-row">
-        <label>Password</label>
-        <input type="password" name="password" required />
-      </div>
-      <button type="submit" class="btn-primary">Accedi</button>
-      <p id="ownerLoginMsg" class="message"></p>
-    </form>
-  </div>
-  <div class="table-container" id="bookingsSection" style="display:none;">
-    <h1>Prenotazioni - Parrucchiera Sonia</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Data</th>
-          <th>Ora</th>
-          <th>Nome</th>
-          <th>Email</th>
-          <th>Telefono</th>
-          <th>Servizio</th>
-          <th>Note</th>
-          <th>Codice</th>
-          <th>Azioni</th>
-        </tr>
-      </thead>
-      <tbody id="bookingsTableBody"></tbody>
-    </table>
-  </div>
-  <script src="owner.js"></script>
-</body>
-</html>
-10. public/owner.js (gestione prenotazioni salone)
-js
-
-
 const loginForm = document.getElementById("ownerLoginForm");
 const loginMsg = document.getElementById("ownerLoginMsg");
 const loginBox = document.getElementById("loginBox");
@@ -150,5 +99,7 @@ async function ownerDelete(id) {
     alert("Errore di connessione");
   }
 }
+window.ownerUpdate = ownerUpdate;
+window.ownerDelete = ownerDelete;
 window.ownerUpdate = ownerUpdate;
 window.ownerDelete = ownerDelete;
