@@ -28,6 +28,19 @@ db.serialize(() => {
       created_at TEXT DEFAULT CURRENT_TIMESTAMP
     )
   `);
+  // Tabella clienti del salone
+db.run(`
+  CREATE TABLE IF NOT EXISTS salon_clients (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    cognome TEXT NOT NULL,
+    telefono TEXT,
+    trattamento TEXT,
+    prezzo REAL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+  )
+`);
+
   // Tabella proprietari (solo Sonia)
   db.run(`
     CREATE TABLE IF NOT EXISTS owners (
@@ -76,6 +89,39 @@ app.post("/api/bookings", (req, res) => {
     INSERT INTO bookings (name, email, phone, service, date, time, notes, code)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `);
+  // --- API per gestione clienti del salone --- //
+
+// Inserisci nuovo cliente
+app.post("/api/salon/clients", (req, res) => {
+  const { nome, cognome, telefono, trattamento, prezzo } = req.body;
+
+  if (!nome || !cognome) {
+    return res.status(400).json({ error: "Nome e cognome obbligatori" });
+  }
+
+  db.run(
+    "INSERT INTO salon_clients (nome, cognome, telefono, trattamento, prezzo) VALUES (?, ?, ?, ?, ?)",
+    [nome, cognome, telefono || "", trattamento || "", prezzo || 0],
+    function (err) {
+      if (err) return res.status(500).json({ error: "Errore inserimento cliente" });
+      res.json({ success: true, id: this.lastID });
+    }
+  );
+});
+
+// Lista clienti + ricerca per nome
+app.get("/api/salon/clients", (req, res) => {
+  const search = req.query.nome ? `%${req.query.nome}%` : "%";
+  db.all(
+    "SELECT * FROM salon_clients WHERE nome LIKE ? ORDER BY id DESC",
+    [search],
+    (err, rows) => {
+      if (err) return res.status(500).json({ error: "Errore caricamento clienti" });
+      res.json(rows);
+    }
+  );
+});
+
   stmt.run(
     [name, email, phone || "", service, date, time, notes || "", code],
     function (err) {
