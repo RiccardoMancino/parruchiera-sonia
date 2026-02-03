@@ -62,7 +62,7 @@ db.run(`
 });
 // CONFIG EMAIL  --------------------
 // Sostituisci con i tuoi dati reali
-const SALON_EMAIL = process.env.SALON_EMAIL || "parrucchierasonia@gmail.com";
+const SALON_EMAIL = process.env.SALON_EMAIL || "riccardomancino05@gmail.com";
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
