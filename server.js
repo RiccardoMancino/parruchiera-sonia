@@ -60,13 +60,10 @@ db.run(`
     }
   });
 });
-// CONFIG EMAIL  --------------------
-// Sostituisci con i tuoi dati reali
-const SALON_EMAIL = process.env.SALON_EMAIL || "riccardomancino05@gmail.com";
 const transporter = nodemailer.createTransport({
-  service: "Gmail",
+  service: "gmail",
   auth: {
-    user: SALON_EMAIL,
+    user: process.env.SALON_EMAIL,
     pass: process.env.SALON_EMAIL_PASS
   }
 });
